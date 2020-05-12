@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.springframework.stereotype.Repository;
@@ -44,9 +43,8 @@ public class ServerRepository {
     }
 
     private void addNodeToMap(String name, String ip) throws IOException {
-        URL url = getClass().getResource("NodeMap.txt");
-        File file = new File(url.getPath());
-        BufferedWriter writer = new BufferedWriter(new FileWriter(file, false)); // Set true for append mode
+        File file = new File("src/main/java/be/uantwerpen/namingserver/database/NodeMap.txt");
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file.getAbsolutePath(), true)); // Set true for append mode
         writer.newLine(); // Add new line
         writer.write(name);
         writer.newLine();
@@ -58,9 +56,8 @@ public class ServerRepository {
 
     private void removeNodeFromMap(Integer node) throws IOException {
         nodes.clear();
-        URL url = getClass().getResource("NodeMap.txt");
-        File file = new File(url.getPath());
-        BufferedReader br = new BufferedReader(new FileReader(file));
+        File file = new File("src/main/java/be/uantwerpen/namingserver/database/NodeMap.txt");
+        BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()));
         String st;
         nodes.clear();
         ArrayList<String> nameToAdd = new ArrayList<>();
@@ -77,7 +74,7 @@ public class ServerRepository {
         }
         br.close();
         int i = 0;
-        BufferedWriter writer = new BufferedWriter(new FileWriter(url.getPath(), false)); // Set true for append mode
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file.getAbsolutePath(), false)); // Set true for append mode
         while (i < nameToAdd.size()) {
             if (i >= 1)
                 writer.newLine();
@@ -93,9 +90,8 @@ public class ServerRepository {
     }
 
     private void readDatabase() throws IOException {
-        URL url = getClass().getResource("Database.txt");
-        File file = new File(url.getPath());
-        BufferedReader br2 = new BufferedReader(new FileReader(file));
+        File file = new File("src/main/java/be/uantwerpen/namingserver/database/Database.txt");
+        BufferedReader br2 = new BufferedReader(new FileReader(file.getAbsolutePath()));
         String st2;
         dataBase.clear();
         while ((st2 = br2.readLine()) != null) {
@@ -113,9 +109,8 @@ public class ServerRepository {
     }
 
     private void readNodeMap() throws IOException {
-        URL url = getClass().getResource("NodeMap.txt");
-        File file = new File(url.getPath());
-        BufferedReader br = new BufferedReader(new FileReader(file));
+        File file = new File("src/main/java/be/uantwerpen/namingserver/database/NodeMap.txt");
+        BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()));
         String st;
         nodes.clear();
         while ((st = br.readLine()) != null) {
