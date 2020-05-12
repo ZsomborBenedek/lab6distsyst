@@ -1,0 +1,1 @@
+The server app which gets the requests and responds to them accordingly
