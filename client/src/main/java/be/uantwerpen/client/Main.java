@@ -113,7 +113,7 @@ public class Main implements Runnable {
 
     //Parse message to set up new next node
     private void next(String msg) {
-        String haha = msg.replace("next:", "");
+        String haha = msg.replace("next ", "");
         if (!haha.isEmpty()) {
             String[] tokens = haha.split("::");
             next = tokens[0];
@@ -137,7 +137,7 @@ public class Main implements Runnable {
     private void getNameAndIp(String msg) throws IOException {
         ArrayList<String> temp = new ArrayList<>();
         if (msg.contains("newNode")) {
-            String s = msg.replace("newNode:", "");
+            String s = msg.replace("newNode ", "");
             if (!s.isEmpty()) {
                 String[] tokens = s.split("::");
                 temp.addAll(Arrays.asList(tokens));
@@ -147,8 +147,8 @@ public class Main implements Runnable {
         if (setupb) {
             if (first) {
                 System.out.println("The second:");
-                sendUDPMessage("previous:" + name + "::ip " + thisIp, temp.get(1), 10000);
-                sendUDPMessage("next:" + name + "::ip " + thisIp, temp.get(1), 10000);
+                sendUDPMessage("previous " + name + "::ip " + thisIp, temp.get(1), 10000);
+                sendUDPMessage("next " + name + "::ip " + thisIp, temp.get(1), 10000);
                 next = temp.get(0);
                 nextIP = temp.get(1);
                 previous = temp.get(0);
@@ -173,7 +173,7 @@ public class Main implements Runnable {
 
     //Check locally stored files
     private void checkFiles() {
-        File folder = new File("Files");
+        File folder = new File("src/main/java/be/uantwerpen/client/Files");
         File[] listOfFiles = folder.listFiles();
         try {
             if (listOfFiles != null)
@@ -194,10 +194,10 @@ public class Main implements Runnable {
 
     //ShutDown
     private void shutdown() throws IOException {
-        sendUDPMessage("next:" + next + "::" + nextIP, previousIP, 10000);
-        sendUDPMessage("previous:" + previous + "::" + previousIP, nextIP, 10000);
+        sendUDPMessage("next " + next + "::" + nextIP, previousIP, 10000);
+        sendUDPMessage("previous " + previous + "::" + previousIP, nextIP, 10000);
         for (String file : files) {
-            sendUDPMessage("File:" + file, previousIP, 10000);
+            sendUDPMessage("file " + file, previousIP, 10000);
         }
         running = false;
         System.out.println("thread shut down");
