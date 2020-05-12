@@ -45,7 +45,8 @@ public class ServerRepository {
 
     private void addNodeToMap(String name, String ip) throws IOException {
         URL url = getClass().getResource("NodeMap.txt");
-        BufferedWriter writer = new BufferedWriter(new FileWriter(url.getPath(), false)); // Set true for append mode
+        File file = new File(url.getPath());
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file, false)); // Set true for append mode
         writer.newLine(); // Add new line
         writer.write(name);
         writer.newLine();
