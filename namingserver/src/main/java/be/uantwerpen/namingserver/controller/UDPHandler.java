@@ -5,7 +5,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
-import java.net.UnknownHostException;
 
 import be.uantwerpen.namingserver.database.ServerRepository;
 
@@ -13,23 +12,19 @@ public class UDPHandler implements Runnable {
 
     private ServerRepository repo;
 
-    public UDPHandler(ServerRepository repo) {
-        this.repo = repo;
+    String thisName;
+    String thisIp;
 
-        try {
-            InetAddress inetAddress = InetAddress.getLocalHost();
-            String name = inetAddress.getHostName();
-            String thisIp = inetAddress.getHostAddress();
-            System.out.println("Name: " + name);
-            System.out.println("IP: " + thisIp);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-            System.out.println("Could not determine host IP address!");
-        }
+    public UDPHandler(ServerRepository repo, InetAddress inetAddress) {
+        this.repo = repo;
+        this.thisName = inetAddress.getHostName();
+        this.thisIp = inetAddress.getHostAddress();
+        System.out.println("Name: " + thisName);
+        System.out.println("IP: " + thisIp);
         System.out.println("--Started--");
     }
 
-    public void sendUDPMessage(String message, String ipAddress, int port) throws IOException {
+    private void sendUDPMessage(String message, String ipAddress, int port) throws IOException {
         DatagramSocket socket = new DatagramSocket();
         InetAddress group = InetAddress.getByName(ipAddress);
         byte[] msg = message.getBytes();
@@ -38,7 +33,7 @@ public class UDPHandler implements Runnable {
         socket.close();
     }
 
-    public void receiveUDPMessageHandler(int port) throws IOException {
+    private void receiveUDPMessageHandler(int port) throws IOException {
         byte[] buffer = new byte[1024];
         MulticastSocket socket = new MulticastSocket(port);
         InetAddress group = InetAddress.getByName("230.0.0.0");
@@ -61,6 +56,7 @@ public class UDPHandler implements Runnable {
                 System.out.println("Node added: " + haha);
                 System.out.println("NodeCount is " + repo.getNodes().size());
                 sendUDPMessage("nodeCount " + repo.getNodes().size(), "230.0.0.0", 10000);
+                sendUDPMessage("namingServer " + thisIp, "230.0.0.0", 10000);
             }
             if (msg.contains("remNode")) {
                 String haha = msg.replace("remNode ", "");
