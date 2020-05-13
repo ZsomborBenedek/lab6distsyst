@@ -1,5 +1,7 @@
 package be.uantwerpen.client;
 
+import java.net.InetAddress;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -13,13 +15,11 @@ public class ClientApplication {
 	}
 
 	@Bean
-	public RestTemplate getRestTemplate() {
-		return new RestTemplate();
-	}
-
-	@Bean
 	public void init() throws Exception {
-		Thread t = new Thread(new Main());
-        t.start();
+	 	InetAddress	inetAddress = InetAddress.getLocalHost();
+		UDPHandler udpHandler = new UDPHandler(inetAddress);
+		TCPHandler tcpHandler = new TCPHandler(inetAddress);
+		Menu menu = new Menu(udpHandler, tcpHandler);
+		menu.run();
 	}
 }

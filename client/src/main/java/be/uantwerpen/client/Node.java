@@ -1,15 +1,13 @@
 package be.uantwerpen.client;
 
-import java.net.InetAddress;
-
 public class Node {
-    InetAddress ip;
+    String ip;
     String name;
 
     /**
      * @return the ip
      */
-    public InetAddress getIp() {
+    public String getIp() {
         return ip;
     }
 
@@ -23,7 +21,7 @@ public class Node {
     /**
      * @param ip the ip to set
      */
-    public void setIp(InetAddress ip) {
+    public void setIp(String ip) {
         this.ip = ip;
     }
 
@@ -36,6 +34,6 @@ public class Node {
 
     @Override
     public String toString() {
-        return "Node{" + "name=''" + name + '\'' + ", name='" + ip.getHostAddress() + '\'' + '}';
+        return "Node{" + "name=''" + name + '\'' + ", name='" + ip + '\'' + '}';
     }
 }

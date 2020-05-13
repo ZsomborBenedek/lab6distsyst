@@ -1,5 +1,8 @@
 package be.uantwerpen.namingserver;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -22,10 +25,10 @@ public class NamingserverApplication {
 	}
 
     @EventListener(ApplicationReadyEvent.class)
-	public void init() {
-		
+	public void init() throws UnknownHostException {
+		InetAddress inetAddress = InetAddress.getLocalHost();
 		ServerRepository repo = new ServerRepository();
-		UDPHandler udpHandler = new UDPHandler(repo);
+		UDPHandler udpHandler = new UDPHandler(repo, inetAddress);
 		udpHandler.run();
 	}
 }
